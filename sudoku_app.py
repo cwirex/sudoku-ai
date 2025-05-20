@@ -1,5 +1,6 @@
 """
-Streamlit Web App for Interactive Sudoku Solver - PRODUCTION READY
+Streamlit Web App for Interactive Sudoku Solver
+PACKAGE IMPORT VERSION - Run from root directory
 Run with: streamlit run sudoku_app.py
 """
 
@@ -9,25 +10,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
 import io
-import sys
 import os
-import traceback
-from pathlib import Path
+
+# Use package imports (since test shows these work perfectly!)
+from src.interactive_solver import InteractiveSudokuSolver
+from src.utils import setup_project_paths
 
 # Configure matplotlib for web use
 plt.style.use('default')
 plt.rcParams['figure.facecolor'] = 'white'
-
-# Add the src directory to the path - handle different environments
-current_dir = Path(__file__).parent
-src_dir = current_dir / 'src'
-if src_dir.exists():
-    sys.path.insert(0, str(src_dir))
-else:
-    # Try parent directory
-    parent_src = current_dir.parent / 'src'
-    if parent_src.exists():
-        sys.path.insert(0, str(parent_src))
 
 # Page configuration
 st.set_page_config(
@@ -75,16 +66,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-def safe_import():
-    """Safely import the solver with better error handling."""
-    try:
-        from interactive_solver import InteractiveSudokuSolver
-        from utils import setup_project_paths
-        return InteractiveSudokuSolver, setup_project_paths, None
-    except ImportError as e:
-        error_msg = f"Import error: {e}. Please ensure the 'src' directory contains all required modules."
-        return None, None, error_msg
-
 def init_session_state():
     """Initialize session state variables."""
     defaults = {
@@ -105,17 +86,9 @@ def create_solver():
     if st.session_state.solver is not None:
         return st.session_state.solver, None
     
-    InteractiveSudokuSolver, setup_project_paths, import_error = safe_import()
-    
-    if import_error:
-        return None, import_error
-    
     try:
-        if setup_project_paths:
-            paths = setup_project_paths()
-            models_dir = paths.get('models_dir', 'models')
-        else:
-            models_dir = 'models'
+        # Use standard models directory
+        models_dir = 'models'
         
         solver = InteractiveSudokuSolver(
             confidence_threshold=0.5,
@@ -126,7 +99,7 @@ def create_solver():
         return solver, None
         
     except Exception as e:
-        error_msg = f"Failed to initialize solver: {e}\n\nPlease ensure models are trained and available."
+        error_msg = f"Failed to initialize solver: {e}\n\nPlease ensure models are trained and available in 'models/' directory."
         return None, error_msg
 
 def process_uploaded_image(uploaded_file):
@@ -224,9 +197,9 @@ def create_solution_figure(solver):
         if not solver.current_board or not solver.current_board.is_valid:
             return None, "Cannot solve invalid board"
         
-        # Create a copy for solving
-        from improved_solver import ImprovedSudokuBoard
-        from sudoku_solver import SudokuSolver
+        # Create a copy for solving - use package imports
+        from src.improved_solver import ImprovedSudokuBoard
+        from src.sudoku_solver import SudokuSolver
         
         solve_board = ImprovedSudokuBoard(solver.current_board.grid.copy())
         solve_board.handwritten_mask = solver.current_board.handwritten_mask.copy()
