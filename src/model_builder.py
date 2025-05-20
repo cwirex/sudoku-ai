@@ -16,7 +16,7 @@ import seaborn as sns
 class SudokuModels:
     """Class containing different model architectures for Sudoku recognition tasks"""
 
-    def __init__(self, input_shape: Tuple[int, int, int] = (28, 28, 1)):
+    def __init__(self, input_shape: Tuple[int, int, int] = (28, 28, 1), learning_rate: float = 0.001):
         """
         Initialize models with input shape.
 
@@ -24,6 +24,7 @@ class SudokuModels:
             input_shape: Shape of input images (height, width, channels)
         """
         self.input_shape = input_shape
+        self.learning_rate = learning_rate
 
     def simple_cnn(self, num_classes: int = 10, name: str = "simple_cnn"):
         """
@@ -109,7 +110,7 @@ class SudokuModels:
         model = models.Model(inputs=inputs, outputs=outputs, name=name)
 
         # Compile model
-        model.compile(optimizer=optimizers.Adam(learning_rate=0.001),
+        model.compile(optimizer=optimizers.Adam(learning_rate=self.learning_rate),
                       loss='categorical_crossentropy',
                       metrics=['accuracy'])
 
@@ -172,7 +173,7 @@ class SudokuModels:
         model = models.Model(inputs=inputs, outputs=outputs, name=name)
 
         # Compile model
-        model.compile(optimizer=optimizers.Adam(learning_rate=0.001),
+        model.compile(optimizer=optimizers.Adam(learning_rate=self.learning_rate),
                       loss='categorical_crossentropy',
                       metrics=['accuracy'])
 
@@ -231,10 +232,10 @@ class ModelEvaluator:
                    train_data: Tuple,
                    val_data: Tuple,
                    epochs: int = 15,
-                   batch_size: int = 32,
+                   batch_size: int = 64,
                    model_name: Optional[str] = None,
-                   patience: int = 5,
-                   lr_patience: int = 3,
+                   patience: int = 8,
+                   lr_patience: int = 4,
                    min_lr: float = 0.00001):
         """
         Train a model and save its history.
@@ -600,7 +601,7 @@ class SudokuExperiment:
         # Show cell type distribution
         self.data_processor.visualize_cell_types()
 
-    def build_models(self, input_shape: Tuple[int, int, int] = (28, 28, 1)):
+    def build_models(self, input_shape: Tuple[int, int, int] = (28, 28, 1), learning_rate: float = 0.001):
         """
         Initialize model builder.
 
@@ -610,11 +611,11 @@ class SudokuExperiment:
         Returns:
             SudokuModels instance
         """
-        self.model_builder = SudokuModels(input_shape)
+        self.model_builder = SudokuModels(input_shape, learning_rate=learning_rate)
         self.model_evaluator = ModelEvaluator()
         return self.model_builder
 
-    def train_digit_models(self, epochs: int = 10, batch_size: int = 32):
+    def train_digit_models(self, epochs: int = 10, batch_size: int = 32, patience: int = 5):
         """
         Train digit recognition models.
 
@@ -642,7 +643,8 @@ class SudokuExperiment:
             digit_data['train'],
             digit_data['val'],
             epochs=epochs,
-            batch_size=batch_size
+            batch_size=batch_size,
+            patience=patience
         )
         self.model_evaluator.evaluate_model(simple_cnn, digit_data['test'])
 
@@ -653,7 +655,8 @@ class SudokuExperiment:
             digit_data['train'],
             digit_data['val'],
             epochs=epochs,
-            batch_size=batch_size
+            batch_size=batch_size,
+            patience=patience
         )
         self.model_evaluator.evaluate_model(deeper_cnn, digit_data['test'])
 
@@ -664,7 +667,8 @@ class SudokuExperiment:
             digit_data['train'],
             digit_data['val'],
             epochs=epochs,
-            batch_size=batch_size
+            batch_size=batch_size,
+            patience=patience
         )
         self.model_evaluator.evaluate_model(resnet_mini, digit_data['test'])
 
@@ -677,7 +681,7 @@ class SudokuExperiment:
 
         return self.results['digit_models']
 
-    def train_cell_type_models(self, epochs: int = 10, batch_size: int = 32):
+    def train_cell_type_models(self, epochs: int = 10, batch_size: int = 32, patience: int = 5):
         """
         Train cell type classification models.
 
@@ -705,7 +709,8 @@ class SudokuExperiment:
             cell_type_data['train'],
             cell_type_data['val'],
             epochs=epochs,
-            batch_size=batch_size
+            batch_size=batch_size,
+            patience=patience
         )
         self.model_evaluator.evaluate_model(cell_classifier, cell_type_data['test'])
 
@@ -716,7 +721,8 @@ class SudokuExperiment:
             cell_type_data['train'],
             cell_type_data['val'],
             epochs=epochs,
-            batch_size=batch_size
+            batch_size=batch_size,
+            patience=patience
         )
         self.model_evaluator.evaluate_model(deeper_cell, cell_type_data['test'])
 
