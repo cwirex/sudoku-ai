@@ -1,3 +1,4 @@
+"""Rendering components for Sudoku generation."""
 import os
 import cv2
 import numpy as np

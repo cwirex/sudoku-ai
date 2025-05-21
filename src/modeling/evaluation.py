@@ -1,3 +1,4 @@
+"""Model evaluation utilities."""
 import numpy as np
 import itertools
 from typing import List, Tuple, Optional

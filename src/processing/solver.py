@@ -1,3 +1,4 @@
+"""End-to-end experiment management."""
 import os
 import cv2
 import numpy as np

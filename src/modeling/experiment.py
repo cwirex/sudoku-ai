@@ -1,3 +1,4 @@
+"""End-to-end experiment management."""
 from typing import List, Tuple, Optional
 
 from src.modeling.evaluation import ModelEvaluator

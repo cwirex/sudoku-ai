@@ -1,5 +1,5 @@
+"""Configuration classes for Sudoku generation."""
 import numpy as np
-
 
 class BaseConfig:
     """Base configuration class that other configs inherit from."""

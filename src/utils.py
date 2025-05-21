@@ -5,8 +5,7 @@ Utility functions for the Sudoku AI project.
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-import cv2
-from typing import List, Tuple, Dict, Optional, Any, Union
+from typing import Optional
 
 def setup_project_paths():
     """

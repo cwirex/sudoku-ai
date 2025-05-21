@@ -1,4 +1,5 @@
 
+"""Core Sudoku puzzle generation."""
 import random
 
 import numpy as np

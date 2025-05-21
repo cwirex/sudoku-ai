@@ -1,3 +1,4 @@
+"""Sudoku model architectures."""
 from typing import Tuple
 from keras import layers, models, optimizers
 

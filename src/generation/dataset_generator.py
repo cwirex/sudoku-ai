@@ -1,3 +1,4 @@
+"""Sudoku dataset generation and utilities."""
 import os
 import cv2
 import numpy as np

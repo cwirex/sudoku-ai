@@ -16,14 +16,11 @@ from PIL import Image
 sys.path.append('..')
 
 # Import our modules
-from src.generator import (
-    SudokuGeneratorConfig, 
-    SudokuPuzzleGenerator, 
-    SudokuImageGenerator, 
-    SudokuDatasetGenerator,
-    generate_sample_dataset
-)
+from src.config.generator_config import SudokuGeneratorConfig
 from src.utils import setup_project_paths, plot_grid
+from src.generation.puzzle_generator import SudokuPuzzleGenerator
+from src.generation.image_generator import SudokuImageGenerator
+from src.generation.dataset_generator import SudokuDatasetGenerator, generate_sample_dataset
 
 # %%
 # Setup paths

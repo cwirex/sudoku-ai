@@ -7,17 +7,15 @@
 # Import necessary packages
 import os
 import sys
-import numpy as np
 import cv2
 import matplotlib.pyplot as plt
-from PIL import Image
 
 # Add the src directory to the path so we can import our modules
 sys.path.append('..')
 
 # Import our modules
-from processing.board_detection import BoardExtractor, ProcessingParams
-from processing.data_processor import SudokuDataset
+from src.processing.board_detection import BoardExtractor
+from src.processing.data_processor import SudokuDataset
 from src.utils import plot_grid, display_cell_grid
 
 # %%
@@ -44,7 +42,7 @@ if os.path.exists(os.path.join(paths['data_dir'], f'{dataset_name}.zip')):
     dataset.load_dataset(dataset_name)
 else:
     # If you don't have a dataset, generate one
-    from src.generation.dataset_generator import generate_sample_dataset
+    from generation.dataset_generator import generate_sample_dataset
     generator, samples = generate_sample_dataset(num_samples=10)
     dataset_name = os.path.basename(generator.output_dir)
     dataset.load_dataset(dataset_name)

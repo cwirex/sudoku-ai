@@ -26,8 +26,7 @@ if platform.processor() == 'arm':
 sys.path.append('..')
 
 # Import our modules
-from processing.data_processor import SudokuDataset, SudokuDataProcessor
-from src.model_builder import SudokuModels, ModelEvaluator, SudokuExperiment
+from src.modeling.experiment import SudokuExperiment
 from src.utils import setup_project_paths, visualize_predictions
 
 # %%
@@ -53,14 +52,14 @@ if os.path.exists(os.path.join(paths['data_dir'], f'{dataset_name}.zip')):
     success = experiment.setup_dataset(dataset_name)
     if not success:
         print("Dataset loading failed. Generating a new one...")
-        from src.generator import generate_sample_dataset
+        from src.generation.dataset_generator import generate_sample_dataset
         generator, samples = generate_sample_dataset(num_samples=100)  # More samples for training
         dataset_name = os.path.basename(generator.output_dir)
         success = experiment.setup_dataset(dataset_name)
 else:
     # Generate a dataset if we don't have one
     print("Dataset not found. Generating a new one...")
-    from src.generator import generate_sample_dataset
+    from src.generation.dataset_generator import generate_sample_dataset
     generator, samples = generate_sample_dataset(num_samples=100)  # More samples for training
     dataset_name = os.path.basename(generator.output_dir)
     success = experiment.setup_dataset(dataset_name)

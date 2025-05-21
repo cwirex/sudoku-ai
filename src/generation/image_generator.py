@@ -1,3 +1,4 @@
+"""Sudoku image generation."""
 import numpy as np
 import random
 

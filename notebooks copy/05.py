@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 sys.path.append('..')
 
 # Import our modules
-from processing.interactive_solver import InteractiveSudokuSolver
+from src.processing.interactive_solver import InteractiveSudokuSolver
 from src.utils import setup_project_paths
 
 
@@ -324,89 +324,6 @@ def test_multiple_images():
 # test_multiple_images()
 
 print("Batch testing is available via: test_multiple_images()")
-
-
-# %% [markdown]
-#  ## Generate Test Images
-# 
-# 
-# 
-#  If you don't have test images, you can generate some synthetic ones for testing.
-
-# %%
-def generate_test_images():
-    """Generate some test images for demonstration."""
-    try:
-        from src.generator import (
-            SudokuGeneratorConfig, 
-            SudokuImageGenerator, 
-            SudokuPuzzleGenerator
-        )
-        import random
-        
-        print("Generating test images...")
-        
-        # Create generators
-        config = SudokuGeneratorConfig(
-            digit_config={"vertical_alignment_offset": 5}
-        )
-        puzzle_generator = SudokuPuzzleGenerator(config)
-        image_generator = SudokuImageGenerator(config)
-        
-        # Generate different types of puzzles
-        test_configs = [
-            {"mode": "printed", "difficulty": "easy", "style": "paper_color"},
-            {"mode": "mixed", "difficulty": "medium", "style": "unified"},
-            {"mode": "handwritten", "difficulty": "hard", "style": "texture"},
-        ]
-        
-        generated_files = []
-        
-        for i, test_config in enumerate(test_configs):
-            # Generate puzzle
-            grid, solution = puzzle_generator.generate(mask_rate=0.5)
-            
-            # Calculate handwritten positions for mixed mode
-            if test_config["mode"] == "mixed":
-                non_empty_positions = [(r, c) for r in range(9) for c in range(9) if grid[r, c] != 0]
-                handwritten_count = len(non_empty_positions) // 2
-                handwritten_positions = set(random.sample(non_empty_positions, handwritten_count))
-            elif test_config["mode"] == "handwritten":
-                handwritten_positions = {(r, c) for r in range(9) for c in range(9) if grid[r, c] != 0}
-            else:
-                handwritten_positions = set()
-            
-            # Generate image
-            image, _ = image_generator.generate_image(
-                grid=grid,
-                mode=test_config["mode"],
-                difficulty=test_config["difficulty"],
-                background_style=test_config["style"],
-                handwritten_positions=handwritten_positions
-            )
-            
-            # Save image
-            filename = f'interactive_test_{i+1}_{test_config["mode"]}_{test_config["difficulty"]}.png'
-            filepath = os.path.join(paths['data_dir'], filename)
-            cv2.imwrite(filepath, cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
-            generated_files.append(filepath)
-            
-            print(f"✅ Generated: {filename}")
-        
-        print(f"\n🎉 Generated {len(generated_files)} test images in {paths['data_dir']}")
-        print("You can now use these images with the interactive solver!")
-        
-        return generated_files
-        
-    except ImportError as e:
-        print(f"Could not import generator modules: {e}")
-        print("Make sure the generator components are available.")
-        return []
-
-# Generate test images (uncomment to enable)
-# generated_images = generate_test_images()
-
-print("Test image generation is available via: generate_test_images()")
 
 
 # %% [markdown]
