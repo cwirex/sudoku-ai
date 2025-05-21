@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 sys.path.append('..')
 
 # Import our modules
-from src.interactive_solver import InteractiveSudokuSolver
+from processing.interactive_solver import InteractiveSudokuSolver
 from src.utils import setup_project_paths
 
 

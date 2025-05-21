@@ -26,7 +26,7 @@ if platform.processor() == 'arm':
 sys.path.append('..')
 
 # Import our modules
-from src.data_processor import SudokuDataset, SudokuDataProcessor
+from processing.data_processor import SudokuDataset, SudokuDataProcessor
 from src.model_builder import SudokuModels, ModelEvaluator, SudokuExperiment
 from src.utils import setup_project_paths, visualize_predictions
 

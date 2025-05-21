@@ -16,8 +16,8 @@ from PIL import Image
 sys.path.append('..')
 
 # Import our modules
-from src.board_detection import BoardExtractor, ProcessingParams
-from src.data_processor import SudokuDataset
+from processing.board_detection import BoardExtractor, ProcessingParams
+from processing.data_processor import SudokuDataset
 from src.utils import plot_grid, display_cell_grid
 
 # %%
@@ -44,7 +44,7 @@ if os.path.exists(os.path.join(paths['data_dir'], f'{dataset_name}.zip')):
     dataset.load_dataset(dataset_name)
 else:
     # If you don't have a dataset, generate one
-    from src.generator import generate_sample_dataset
+    from src.generation.dataset_generator import generate_sample_dataset
     generator, samples = generate_sample_dataset(num_samples=10)
     dataset_name = os.path.basename(generator.output_dir)
     dataset.load_dataset(dataset_name)

@@ -5,16 +5,11 @@ Run with: streamlit run sudoku_app.py
 """
 
 import streamlit as st
-import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
-import io
-import os
 
-# Use package imports (since test shows these work perfectly!)
-from src.interactive_solver import InteractiveSudokuSolver
-from src.utils import setup_project_paths
+from src.processing.interactive_solver import InteractiveSudokuSolver
 
 # Configure matplotlib for web use
 plt.style.use('default')
@@ -321,8 +316,8 @@ def create_solution_figure(solver):
             return None, "Cannot solve invalid board"
         
         # Create a copy for solving - use package imports
-        from src.improved_solver import ImprovedSudokuBoard
-        from src.sudoku_solver import SudokuSolver
+        from src.processing.improved_solver import ImprovedSudokuBoard
+        from src.processing.solver import SudokuSolver
         
         solve_board = ImprovedSudokuBoard(solver.current_board.grid.copy())
         solve_board.handwritten_mask = solver.current_board.handwritten_mask.copy()

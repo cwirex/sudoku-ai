@@ -16,11 +16,11 @@ import random
 sys.path.append('..')
 
 # Import our modules
-from src.board_detection import BoardExtractor
+from processing.board_detection import BoardExtractor
 from src.utils import load_model, plot_grid, setup_project_paths
 from src.sudoku_solver import SudokuProcessor, SudokuBoard, SudokuSolver
 # Import the improved solver
-from src.improved_solver import ImprovedSudokuProcessor, ImprovedSudokuBoard
+from processing.improved_solver import ImprovedSudokuProcessor, ImprovedSudokuBoard
 
 # %%
 # Setup paths
@@ -71,7 +71,7 @@ improved_processor = ImprovedSudokuProcessor(
 
 # %%
 # Look for test images
-from src.data_processor import SudokuDataset
+from processing.data_processor import SudokuDataset
 from src.generator import SudokuGeneratorConfig, SudokuImageGenerator, SudokuPuzzleGenerator
 
 # Try to find existing test images first
